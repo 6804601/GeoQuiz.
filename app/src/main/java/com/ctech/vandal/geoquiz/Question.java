@@ -1,27 +1,29 @@
 package com.ctech.vandal.geoquiz;
 
 public class Question {
-    private int mTextRedId;
+    private int mTextResId;
     private boolean mAnswerTrue;
 
-    public Question(int textResId, boolean answerTrue){
-        mTextRedId = textResId;
-        mAnswerTrue = answerTrue;
+    public int getTextResId() {
+        return mTextResId;
     }
 
-    public int getmTextRedId() {
-        return mTextRedId;
+    public void setTextResId(int textResId) {
+        mTextResId = textResId;
     }
 
-    public void setmTextRedId(int mTextRedId) {
-        this.mTextRedId = mTextRedId;
-    }
-
-    public boolean ismAnswerTrue() {
+    public boolean isAnswerTrue() {
         return mAnswerTrue;
     }
 
-    public void setmAnswerTrue(boolean mAnswerTrue) {
-        this.mAnswerTrue = mAnswerTrue;
+    public void setAnswerTrue(boolean answerTrue) {
+        mAnswerTrue = answerTrue;
     }
+
+    public Question(int textResId, boolean answerTrue){
+        mTextResId = textResId;
+        mAnswerTrue = answerTrue;
+    }
+
+
 }
