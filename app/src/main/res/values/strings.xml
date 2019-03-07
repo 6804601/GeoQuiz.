@@ -11,4 +11,5 @@
     <string name="question_europe">The Berlin wall fell in 1991</string>
     <string name="question_africa">Egypt was the first country in Africa to gain independence</string>
     <string name="question_canada">Niagara falls is located in Canada</string>
+    <string name="next_button_description">Go to the next question.</string>
 </resources>
