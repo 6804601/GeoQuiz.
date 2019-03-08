@@ -3,13 +3,15 @@
     <string name="true_button">True</string>
     <string name="false_button">False</string>
     <string name="next_button">Next</string>
+    <string name="previous_button">Previous</string>
     <string name="correct_toast">Correct!</string>
     <string name="incorrect_toast">Incorrect!</string>
     <string name="question_australia">Canberra is the capital of Australia</string>
     <string name="question_america">Wisconsin produces the most of amount of cheese in America</string>
     <string name="question_asia">Japan is the capital of Asia</string>
     <string name="question_europe">The Berlin wall fell in 1991</string>
-    <string name="question_africa">Egypt was the first country in Africa to gain independence</string>
+    <string name="question_africa">Egypt was the first country in Africa to gain independence from a European country</string>
     <string name="question_canada">Niagara falls is located in Canada</string>
     <string name="next_button_description">Go to the next question.</string>
+    <string name="previous_button_description">Go to the next question.</string>
 </resources>
