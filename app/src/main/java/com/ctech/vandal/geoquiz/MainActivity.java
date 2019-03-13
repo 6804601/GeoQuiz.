@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
         mTrueButton = (Button) findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
 
-
-
         mNextButton = findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -121,14 +119,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateQuestion(){
+        //Log.d(TAG, "Updating Question Text", new Exception());
         int questionResourceId = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(questionResourceId);
     }
     private void checkAnswer(boolean userPressedTrue){
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-        int messageResourceId = 0;
+        int messageResourceId = 0, correctlyAnswered = 0;
         if (userPressedTrue == answerIsTrue) {
             messageResourceId = R.string.correct_toast;
+            correctlyAnswered++;
         }
         else{
             messageResourceId = R.string.incorrect_toast;
