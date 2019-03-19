@@ -1,5 +1,6 @@
 package com.ctech.vandal.geoquiz;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final String KEY_INDEX = "index";
+    private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -24,16 +26,18 @@ public class MainActivity extends AppCompatActivity {
     private TextView mQuestionTextView;
     private Button mCheatButton;
 
-    private Question[] mQuestionBank = new Question[] {
-            new Question(R.string.question_australia,  true),
-            new Question(R.string.question_america,  true),
-            new Question(R.string.question_asia,  false),
-            new Question(R.string.question_europe,  true),
-            new Question(R.string.question_africa,  false),
-            new Question(R.string.question_canada,  false),
+    private Question[] mQuestionBank = new Question[]{
+            new Question(R.string.question_australia, true),
+            new Question(R.string.question_america, true),
+            new Question(R.string.question_asia, false),
+            new Question(R.string.question_europe, true),
+            new Question(R.string.question_africa, false),
+            new Question(R.string.question_canada, false),
     };
 
     private int mCurrentIndex = 0;
+
+    private boolean mIsCheater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mIsCheater = false;
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
             }
@@ -75,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
         updateQuestion();
 
         mCheatButton = findViewById(R.id.cheat_button);
-        mCheatButton.setOnClickListener(new View.OnClickListener(){
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-            Intent intent = new Intent(MainActivity.this, CheatActivity.class);
-            startActivity(intent);
+            public void onClick(View v) {
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent intent = CheatActivity.newIntent(MainActivity.this, answerIsTrue);
+                startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
         });
 
@@ -97,61 +103,84 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
-    public void onStart(){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            if (data == null) {
+                return;
+            }
+            mIsCheater = CheatActivity.wasAnswerShown(data);
+        }
+    }
+
+    @Override
+    public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart has been called!");
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume has been called!");
     }
+
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause has been called!");
     }
+
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
+
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop has been called!");
     }
+
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy has been called!");
     }
 
-    private void updateQuestion(){
+    private void updateQuestion() {
         //Log.d(TAG, "Updating Question Text", new Exception());
         int questionResourceId = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(questionResourceId);
     }
-    private void checkAnswer(boolean userPressedTrue){
+
+    private void checkAnswer(boolean userPressedTrue) {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResourceId = 0, correctlyAnswered = 0;
-        if (userPressedTrue == answerIsTrue) {
-            messageResourceId = R.string.correct_toast;
-            correctlyAnswered++;
+        if (mIsCheater) {
+            messageResourceId = R.string.judgment_toast;
+        } else {
+            if (userPressedTrue == answerIsTrue) {
+                messageResourceId = R.string.correct_toast;
+                correctlyAnswered++;
+            } else {
+                messageResourceId = R.string.incorrect_toast;
+            }
+            Toast toast = Toast.makeText(this,
+                    messageResourceId,
+                    Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP, 0, 224);
+            toast.show();
         }
-        else{
-            messageResourceId = R.string.incorrect_toast;
+    }
+        public void randomQuestion (View v){
+            mCurrentIndex = (int) (Math.random() * 6);
+            updateQuestion();
         }
-        Toast toast = Toast.makeText(this,
-                messageResourceId,
-                Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP,0,224);
-        toast.show();
     }
-    public void randomQuestion(View v){
-        mCurrentIndex = (int) (Math.random() * 6);
-        updateQuestion();
-    }
-}
