@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             new Question(R.string.question_africa, false),
             new Question(R.string.question_canada, false),
     };
-
+    int cheatsAvailable = 3, messageResourceId = 0;
     private int mCurrentIndex = 0;
 
     private boolean mIsCheater;
@@ -78,17 +78,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         updateQuestion();
-
-        mCheatButton = findViewById(R.id.cheat_button);
-        mCheatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-                Intent intent = CheatActivity.newIntent(MainActivity.this, answerIsTrue);
-                startActivityForResult(intent, REQUEST_CODE_CHEAT);
-            }
-        });
-
+            mCheatButton = findViewById(R.id.cheat_button);
+            mCheatButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                    Intent intent = CheatActivity.newIntent(MainActivity.this, answerIsTrue);
+                    startActivityForResult(intent, REQUEST_CODE_CHEAT);
+                }
+            });
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,11 +163,13 @@ public class MainActivity extends AppCompatActivity {
         int messageResourceId = 0, correctlyAnswered = 0;
         if (mIsCheater) {
             messageResourceId = R.string.judgment_toast;
-        } else {
+        }
+        else {
             if (userPressedTrue == answerIsTrue) {
                 messageResourceId = R.string.correct_toast;
                 correctlyAnswered++;
-            } else {
+            }
+            else {
                 messageResourceId = R.string.incorrect_toast;
             }
             Toast toast = Toast.makeText(this,

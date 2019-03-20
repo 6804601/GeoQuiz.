@@ -52,11 +52,6 @@ public class CheatActivity extends AppCompatActivity {
             }
         });
     }
-    private void setAnswerShownResult(boolean isAnswerShown){
-        Intent toReturn = new Intent();
-        toReturn.putExtra(EXTRA_ANSWER_WAS_SHOWN, isAnswerShown);
-        setResult(RESULT_OK, toReturn);
-    }
     private void setAnswerShownResult(boolean isAnswerShown) {
         Intent toReturn = new Intent();
         toReturn.putExtra(EXTRA_ANSWER_WAS_SHOWN, isAnswerShown);
